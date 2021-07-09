@@ -1,12 +1,18 @@
 import React from 'react';
-import { ThemeProvider } from "@material-ui/core";
+import { ThemeProvider, Grid } from "@material-ui/core";
 import theme from './theme/theme';
 import Header from './components/Header/Header'
+import SearchBar from './components/Search/SearchBar';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Header />
+      <Grid container justifyContent='center'>
+        <Grid item xs={10}>
+          <SearchBar />
+        </Grid>
+      </Grid>
     </ThemeProvider>
   );
 }
