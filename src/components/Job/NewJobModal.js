@@ -75,6 +75,15 @@ const NewJobModal = (props) => {
         })); //add skills
 
     const handleSubmit = async () => {
+        for(const field in jobDetails) {
+            if(typeof jobDetails[field] === 'string' && !jobDetails[field]){
+                return;
+            }
+            if(!jobDetails.skills.length){
+                return;
+            }
+        }
+
         setLoading(true);
         await props.postJob(jobDetails);
         closeModal();
@@ -194,7 +203,7 @@ const NewJobModal = (props) => {
                     </Grid>
                 </Grid>
                 <Box mt={2}>
-                    <Typography>Skills</Typography>
+                    <Typography>Skills*</Typography>
                     <Box display='flex'>
                         {
                             skills.map((skill) => (
