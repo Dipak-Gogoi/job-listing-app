@@ -5,11 +5,12 @@ import Header from './components/Header/Header'
 import SearchBar from './components/Search/SearchBar';
 import JobCard from './components/Job/JobCard';
 import NewJobModal from './components/Job/NewJobModal';
-import { firestore } from './firebase/config';
+import { firestore, app } from './firebase/config';
 
 function App() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true );
+  const [newJobModal, setNewJobModal] = useState(false);
 
   const fetchJobs = async () => {
     const req = await firestore
@@ -27,18 +28,37 @@ function App() {
     setLoading(false);
   };
 
+  const postJob = async (jobDetails) => {
+    await firestore.collection('jobs').add({
+      ...jobDetails,
+      postedOn: app.firestore.FieldValue.serverTimestamp(),
+    });
+    fetchJobs();
+  };
+
   useEffect(() => {
     fetchJobs();
   }, []);
 
+  const openNewJobModal = () => {
+    setNewJobModal(true);
+  };
+
+  const closeNewJobModal = () => {
+    setNewJobModal(false)
+  };
+
   return (
     <ThemeProvider theme={theme}>
-      <Header />
-
+      <Header openNewJobModal={openNewJobModal} />
+      <NewJobModal 
+        closeNewJobModal={closeNewJobModal} 
+        newJobModal={newJobModal} 
+        postJob={postJob} 
+      />
       <Grid container justifyContent='center'>
         <Grid item xs={10}>
           <SearchBar />
-          <NewJobModal />
           {
             loading ? (
               <Box display='flex' justifyContent='center'>

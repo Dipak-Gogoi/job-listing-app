@@ -12,7 +12,8 @@ import {
     Typography,
     makeStyles,
     Button,
-    IconButton
+    IconButton,
+    CircularProgress
 } from "@material-ui/core";
 import { Close } from '@material-ui/icons';
 
@@ -40,17 +41,20 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const NewJobModal = () => {
-    const [jobDetails, setJobDetails] = useState({
-        title: '',
-        type: 'Full time',
-        companyName: '',
-        companyUrl: '',
-        location: 'Remote',
-        link: '',
-        description: '',
-        skills: [],
-    });
+const initState = {
+    title: '',
+    type: 'Full time',
+    companyName: '',
+    companyUrl: '',
+    location: 'Remote',
+    link: '',
+    description: '',
+    skills: [],
+}; 
+
+const NewJobModal = (props) => {
+    const [loading, setLoading] = useState(false);
+    const [jobDetails, setJobDetails] = useState(initState);
 
     const handleChange = (e) => {
         e.persist();
@@ -70,6 +74,18 @@ const NewJobModal = () => {
             skills: oldState.skills.concat(skill),
         })); //add skills
 
+    const handleSubmit = async () => {
+        setLoading(true);
+        await props.postJob(jobDetails);
+        closeModal();
+    };
+
+    const closeModal = () => {
+        setJobDetails(initState);
+        setLoading(false);
+        props.closeNewJobModal();
+    };
+
     const classes = useStyles();
     const skills = [
         'Javascript',
@@ -80,13 +96,13 @@ const NewJobModal = () => {
         'MongoDB',
         'SQL',
     ];
-    console.log(jobDetails);
+    // console.log(jobDetails);
     return (
-        <Dialog open={true} fullWidth>
+        <Dialog open={props.newJobModal} fullWidth>
             <DialogTitle>
                 <Box display='flex' justifyContent='space-between' alignItems='center'>
                     Post Job
-                    <IconButton>
+                    <IconButton onClick={closeModal}>
                         <Close />
                     </IconButton>
                 </Box>
@@ -195,7 +211,20 @@ const NewJobModal = () => {
             <DialogActions>
                 <Box color='red' width='100%' display='flex' justifyContent='space-between' alignItems='center'>
                     <Typography variant='caption'>*Required fields</Typography>
-                    <Button variant='contained' color='primary'>Post job</Button>
+                    <Button 
+                        onClick={handleSubmit}
+                        variant='contained' 
+                        color='primary'
+                        disabled={loading}
+                    >
+                    {
+                        loading ? (
+                            <CircularProgress color='secondary' size={22} />
+                        ) : (
+                            'Post job'
+                        )
+                    }
+                    </Button>
                 </Box>
             </DialogActions>
         </Dialog>

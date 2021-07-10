@@ -29,7 +29,7 @@ const SearchBar = () => {
                 <MenuItem value='Remote'>Remote</MenuItem>
                 <MenuItem value='In-Office'>In-Office</MenuItem>
             </Select>
-            <Button variant='contained' color='primary' >Post a Job</Button>
+            <Button variant='contained' color='primary' >Search</Button>
         </Box>
     )
 }
