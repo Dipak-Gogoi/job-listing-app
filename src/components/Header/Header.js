@@ -7,7 +7,7 @@ const Header = (props) => {
             <Grid container justifyContent='center'>
                 <Grid item xs={10}>
                     <Box display='flex' justifyContent='space-between'>
-                        <Typography variant="h4">Open job Listing</Typography>
+                        <Typography variant="h4">Find Jobs</Typography>
                         <Button
                             onClick={props.openNewJobModal}
                             variant='contained'

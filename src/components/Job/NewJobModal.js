@@ -97,13 +97,14 @@ const NewJobModal = (props) => {
 
     const classes = useStyles();
     const skills = [
+        'HTML',
+        'CSS',
         'Javascript',
         'React',
-        'Node',
         'Vue',
+        'Node',
         'Firebase',
         'MongoDB',
-        'SQL',
     ];
     // console.log(jobDetails);
     return (
